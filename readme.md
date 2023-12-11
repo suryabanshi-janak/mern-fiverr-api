@@ -15,19 +15,19 @@ Welcome to FiverClone Node.js Backend, a simplified backend of a freelancing pla
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/yourusername/fiver-clone-nodejs.git
+   git clone https://github.com/suryabanshi-janak/mern-fiverr-api.git
    ```
 
 2. **Navigate to the project directory:**
 
    ```bash
-   cd fiver-clone-nodejs
+   cd mern-fiverr-api
    ```
 
 3. **Install dependencies:**
 
    ```bash
-   npm install
+   yarn
    ```
 
 4. **Set up environment variables:**
@@ -42,6 +42,6 @@ Welcome to FiverClone Node.js Backend, a simplified backend of a freelancing pla
 
 5. **Start the application:**
    ```bash
-   npm start
+   yarn start
    ```
    The application will be accessible at [http://localhost:8000](http://localhost:8000).
