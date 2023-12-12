@@ -34,7 +34,7 @@ Welcome to FiverClone Node.js Backend, a simplified backend of a freelancing pla
 
    - Create a `.env` file in the root directory and add the following:
      ```env
-     PORT=8000
+     PORT=5000
      MONGODB_URI=your_mongodb_uri
      SESSION_SECRET=your_session_secret
      ```
@@ -44,4 +44,4 @@ Welcome to FiverClone Node.js Backend, a simplified backend of a freelancing pla
    ```bash
    yarn start
    ```
-   The application will be accessible at [http://localhost:8000](http://localhost:8000).
+   The application will be accessible at [http://localhost:5000](http://localhost:5000).
