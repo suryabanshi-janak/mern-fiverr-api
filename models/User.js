@@ -7,17 +7,17 @@ const UserSchema = new Schema(
   {
     username: {
       type: String,
-      required: true,
       unique: true,
+      required: [true, "Username is required"],
     },
     email: {
       type: String,
-      required: true,
       unique: true,
+      required: [true, "Email is required"],
     },
     password: {
       type: String,
-      required: true,
+      required: [true, "Password is required"],
     },
     img: {
       type: String,
@@ -25,7 +25,7 @@ const UserSchema = new Schema(
     },
     country: {
       type: String,
-      required: true,
+      required: [true, "Country is required"],
     },
     phone: {
       type: String,

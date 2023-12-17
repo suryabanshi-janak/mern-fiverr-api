@@ -29,7 +29,7 @@ const register = asyncHandler(async (req, res) => {
   res.status(201).json({ message: "User has been created successfully!" });
 });
 
-// @desc   User login
+// @desc   Authenticate a user
 // route   POST /api/v1/auth/login
 // @access Public
 const login = asyncHandler(async (req, res) => {
@@ -44,10 +44,10 @@ const login = asyncHandler(async (req, res) => {
     throw new Error("User not found");
   }
 
-  const matchPassword = await bcrypt.compare(user.password, password);
-  // if (!matchPassword) {
-  //   throw new Error("Invalid credentials!");
-  // }
+  const matchPassword = await bcrypt.compare(password, user.password);
+  if (!matchPassword) {
+    throw new Error("Invalid credentials!");
+  }
 
   const token = jwt.sign(
     { userId: user._id, isSeller: user.isSeller },
