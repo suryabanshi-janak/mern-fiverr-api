@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const { Schema } = mongoose;
+const mongoose = require('mongoose')
+const { Schema } = mongoose
 
 const ConversationSchema = new Schema(
   {
@@ -10,12 +10,12 @@ const ConversationSchema = new Schema(
     },
     sellerId: {
       type: mongoose.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
     buyerId: {
       type: mongoose.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
     readBySeller: {
@@ -34,6 +34,6 @@ const ConversationSchema = new Schema(
   {
     timestamps: true,
   }
-);
+)
 
-module.exports = mongoose.model("Conversation", ConversationSchema);
+module.exports = mongoose.model('Conversation', ConversationSchema)

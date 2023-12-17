@@ -1,21 +1,21 @@
-const mongoose = require("mongoose");
-const { Schema } = mongoose;
+const mongoose = require('mongoose')
+const { Schema } = mongoose
 
 const OrderSchema = new Schema(
   {
     gigId: {
       type: mongoose.Types.ObjectId,
-      ref: "Gig",
+      ref: 'Gig',
       required: true,
     },
     buyerId: {
       type: mongoose.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
     sellerId: {
       type: mongoose.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
     isCompleted: {
@@ -30,6 +30,6 @@ const OrderSchema = new Schema(
   {
     timestamps: true,
   }
-);
+)
 
-module.exports = mongoose.model("Order", OrderSchema);
+module.exports = mongoose.model('Order', OrderSchema)

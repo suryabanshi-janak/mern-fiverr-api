@@ -1,11 +1,11 @@
-const mongoose = require("mongoose");
-const { Schema } = mongoose;
+const mongoose = require('mongoose')
+const { Schema } = mongoose
 
 const GigSchema = new Schema(
   {
     userId: {
       type: mongoose.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
     title: {
@@ -68,6 +68,6 @@ const GigSchema = new Schema(
   {
     timestamps: true,
   }
-);
+)
 
-module.exports = mongoose.model("Gig", GigSchema);
+module.exports = mongoose.model('Gig', GigSchema)
