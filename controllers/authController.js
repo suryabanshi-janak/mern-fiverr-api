@@ -1,52 +1,41 @@
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
-const asyncHandler = require('express-async-handler')
-const User = require('../models/User')
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const asyncHandler = require('express-async-handler');
+const User = require('../models/User');
 
-// @desc   Register a new user
-// route   POST /api/v1/auth/register
-// @access Public
 const register = asyncHandler(async (req, res) => {
-  const { username, email, password, country } = req.body
+  const { username, email } = req.body;
 
-  const emailAlreadyExists = await User.findOne({ email })
+  const emailAlreadyExists = await User.findOne({ email });
   if (emailAlreadyExists) {
-    throw new Error('Email already exists')
+    throw new Error('Email already exists');
   }
 
-  const usernameAlreadyExists = await User.findOne({ username })
+  const usernameAlreadyExists = await User.findOne({ username });
   if (usernameAlreadyExists) {
-    throw new Error('Username already exists')
+    throw new Error('Username already exists');
   }
 
-  const user = await User.create({
-    username,
-    email,
-    password,
-    country,
-  })
+  await User.create(req.body);
 
-  res.status(201).json({ message: 'User has been created successfully!' })
-})
+  res.status(201).json({ message: 'User has been created successfully!' });
+});
 
-// @desc   Authenticate a user
-// route   POST /api/v1/auth/login
-// @access Public
 const login = asyncHandler(async (req, res) => {
-  const { username, password } = req.body
+  const { username, password } = req.body;
 
   if (!username || !password) {
-    throw new Error('Please provide a username and password')
+    throw new Error('Please provide a username and password');
   }
 
-  const user = await User.findOne({ username })
+  const user = await User.findOne({ username });
   if (!user) {
-    throw new Error('User not found')
+    throw new Error('User not found');
   }
 
-  const matchPassword = await bcrypt.compare(password, user.password)
+  const matchPassword = await bcrypt.compare(password, user.password);
   if (!matchPassword) {
-    throw new Error('Invalid credentials!')
+    throw new Error('Invalid credentials!');
   }
 
   const token = jwt.sign(
@@ -55,7 +44,7 @@ const login = asyncHandler(async (req, res) => {
     {
       expiresIn: process.env.JWT_LIFETIME,
     }
-  )
+  );
 
   res
     .cookie('token', token, {
@@ -65,8 +54,8 @@ const login = asyncHandler(async (req, res) => {
       expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
     })
     .status(200)
-    .json({ message: 'User logged in' })
-})
+    .json({ message: 'User logged in' });
+});
 
 const logout = asyncHandler(async (req, res) => {
   res
@@ -75,7 +64,7 @@ const logout = asyncHandler(async (req, res) => {
       expires: new Date(0),
     })
     .status(200)
-    .json({ message: 'User logged out' })
-})
+    .json({ message: 'User logged out' });
+});
 
-module.exports = { register, login, logout }
+module.exports = { register, login, logout };
