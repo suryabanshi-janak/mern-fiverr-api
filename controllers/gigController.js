@@ -2,7 +2,21 @@ const asyncHandler = require('express-async-handler');
 const Gig = require('../models/Gig');
 
 const getGigs = asyncHandler(async (req, res) => {
-  const gigs = await Gig.find();
+  const q = req.query;
+
+  const filters = {
+    ...(q.userId && { userId: q.userId }),
+    ...(q.cat && { cat: q.cat }),
+    ...((q.min || q.max) && {
+      price: {
+        ...(q.min && { $gt: q.min }),
+        ...(q.max && { $lt: q.max }),
+      },
+    }),
+    ...(q.search && { title: { $regex: q.search, $options: 'i' } }),
+  };
+
+  const gigs = await Gig.find(filters).sort({ [q.sort]: -1 });
 
   res.status(200).json({ data: gigs });
 });

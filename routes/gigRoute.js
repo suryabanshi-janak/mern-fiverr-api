@@ -10,13 +10,10 @@ const {
 
 const router = express.Router();
 
-router
-  .route('/')
-  .get(authenticateUser, getGigs)
-  .post(authenticateUser, createGig);
+router.route('/').get(getGigs).post(authenticateUser, createGig);
 router
   .route('/:id')
-  .get(authenticateUser, getGig)
+  .get(getGig)
   .patch(authenticateUser, updateGig)
   .delete(authenticateUser, deleteGig);
 
