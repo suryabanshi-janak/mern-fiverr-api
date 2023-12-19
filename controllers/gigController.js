@@ -59,7 +59,7 @@ const deleteGig = asyncHandler(async (req, res) => {
     throw new Error('You can only delete gigs that you have created');
   }
 
-  await Gig.findByIdAndDelete(req.params.id);
+  await gig.deleteOne();
 
   res.status(200).json({ message: 'Gig has been deleted!' });
 });
