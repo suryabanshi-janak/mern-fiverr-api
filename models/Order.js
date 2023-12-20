@@ -1,5 +1,5 @@
-const mongoose = require('mongoose')
-const { Schema } = mongoose
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
 const OrderSchema = new Schema(
   {
@@ -30,6 +30,16 @@ const OrderSchema = new Schema(
   {
     timestamps: true,
   }
-)
+);
 
-module.exports = mongoose.model('Order', OrderSchema)
+// OrderSchema.set('toObject', { virtuals: true });
+OrderSchema.set('toJSON', { virtuals: true });
+
+OrderSchema.virtual('gig', {
+  ref: 'Gig',
+  localField: 'gigId',
+  foreignField: '_id',
+  justOne: true,
+});
+
+module.exports = mongoose.model('Order', OrderSchema);

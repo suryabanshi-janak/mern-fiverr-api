@@ -9,6 +9,7 @@ const { notFound, errorHandler } = require('./middleware/error-handler');
 const authRoute = require('./routes/authRoute');
 const gigRoute = require('./routes/gigRoute');
 const reviewRoute = require('./routes/reviewRoute');
+const orderRoute = require('./routes/orderRoute');
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use(cookieParser());
 app.use('/api/v1/auth', authRoute);
 app.use('/api/v1/gigs', gigRoute);
 app.use('/api/v1/reviews', reviewRoute);
+app.use('/api/v1/orders', orderRoute);
 
 app.use(notFound);
 app.use(errorHandler);
