@@ -7,7 +7,7 @@ const {
 } = require('../controllers/conversationController');
 const { authenticateUser } = require('../middleware/authentication');
 
-const router = express.router();
+const router = express.Router();
 
 router
   .route('/')
