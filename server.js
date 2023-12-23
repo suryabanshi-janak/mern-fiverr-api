@@ -19,6 +19,7 @@ const gigRoute = require('./routes/gigRoute');
 const reviewRoute = require('./routes/reviewRoute');
 const orderRoute = require('./routes/orderRoute');
 const conversationRoute = require('./routes/conversationRoute');
+const messageRoute = require('./routes/messageRoute');
 
 const app = express();
 
@@ -65,6 +66,7 @@ app.use('/api/v1/gigs', gigRoute);
 app.use('/api/v1/reviews', reviewRoute);
 app.use('/api/v1/orders', orderRoute);
 app.use('/api/v1/conversations', conversationRoute);
+app.use('/api/v1/messages', messageRoute);
 
 app.use(notFound);
 app.use(errorHandler);
