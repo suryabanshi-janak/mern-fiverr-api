@@ -37,9 +37,7 @@ const updateConversation = asyncHandler(async (req, res) => {
     { id: req.params.id },
     {
       $set: {
-        ...(req.user.isSeller
-          ? { readBySeller: true }
-          : { readByBuyer: false }),
+        ...(req.user.isSeller ? { readBySeller: true } : { readByBuyer: false }),
       },
     },
     { new: true }

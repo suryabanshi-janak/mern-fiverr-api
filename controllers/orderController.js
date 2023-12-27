@@ -23,9 +23,7 @@ const createOrder = asyncHandler(async (req, res) => {
 
 const getOrder = asyncHandler(async (req, res) => {
   const orders = await Order.find({
-    ...(req.user.isSeller
-      ? { sellerId: req.user._id }
-      : { buyerId: req.user._id }),
+    ...(req.user.isSeller ? { sellerId: req.user._id } : { buyerId: req.user._id }),
   }).populate({ path: 'gig', select: 'cover title price -_id' });
 
   res.status(200).json({ data: orders });

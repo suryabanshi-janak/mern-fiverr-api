@@ -46,12 +46,13 @@ const login = asyncHandler(async (req, res) => {
     }
   );
 
+  const expiryInMs = 1000 * 60 * 60 * 24; // 24 hours
   res
     .cookie('token', token, {
       httpOnly: true,
       sameSite: 'strict',
       secure: process.env.NODE_ENV !== 'development',
-      expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
+      expires: new Date(Date.now() + expiryInMs),
     })
     .status(200)
     .json({ message: 'User logged in' });

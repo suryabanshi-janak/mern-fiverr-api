@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-const connectDB = (url) => {
+const connectDB = () => {
   return mongoose.connect(process.env.MONGODB_URI);
 };
 

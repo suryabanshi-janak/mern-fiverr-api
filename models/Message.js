@@ -1,5 +1,5 @@
-const mongoose = require('mongoose')
-const { Schema } = mongoose
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
 const MessageSchema = new Schema(
   {
@@ -19,6 +19,6 @@ const MessageSchema = new Schema(
     },
   },
   { timestamps: true }
-)
+);
 
-module.exports = mongoose.model('Message', MessageSchema)
+module.exports = mongoose.model('Message', MessageSchema);
