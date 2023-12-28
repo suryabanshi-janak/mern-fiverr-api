@@ -9,9 +9,12 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const compression = require('compression');
 const cors = require('cors');
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 
 const connectDB = require('./config/db');
 const { notFound, errorHandler } = require('./middleware/error-handler');
+const swaggerOptions = require('./config/swagger');
 
 // routes
 const authRoute = require('./routes/authRoute');
@@ -67,6 +70,9 @@ app.use('/api/v1/reviews', reviewRoute);
 app.use('/api/v1/orders', orderRoute);
 app.use('/api/v1/conversations', conversationRoute);
 app.use('/api/v1/messages', messageRoute);
+
+const specs = swaggerJsdoc(swaggerOptions);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 app.use(notFound);
 app.use(errorHandler);
