@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-const OrderSchema = new Schema(
+const orderSchema = new Schema(
   {
     gigId: {
       type: mongoose.Types.ObjectId,
@@ -32,14 +32,14 @@ const OrderSchema = new Schema(
   }
 );
 
-// OrderSchema.set('toObject', { virtuals: true });
-OrderSchema.set('toJSON', { virtuals: true });
+// orderSchema.set('toObject', { virtuals: true });
+orderSchema.set('toJSON', { virtuals: true });
 
-OrderSchema.virtual('gig', {
+orderSchema.virtual('gig', {
   ref: 'Gig',
   localField: 'gigId',
   foreignField: '_id',
   justOne: true,
 });
 
-module.exports = mongoose.model('Order', OrderSchema);
+module.exports = mongoose.model('Order', orderSchema);

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-const GigSchema = new Schema(
+const gigSchema = new Schema(
   {
     userId: {
       type: mongoose.Types.ObjectId,
@@ -70,4 +70,4 @@ const GigSchema = new Schema(
   }
 );
 
-module.exports = mongoose.model('Gig', GigSchema);
+module.exports = mongoose.model('Gig', gigSchema);

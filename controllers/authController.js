@@ -1,10 +1,19 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const asyncHandler = require('express-async-handler');
+const { addMinutes, isAfter } = require('date-fns');
+
 const User = require('../models/User');
+const { generateOTP } = require('../utils/otp');
+const OTP = require('../models/OTP');
 
 const register = asyncHandler(async (req, res) => {
   const { username, email } = req.body;
+
+  if (!username || !email) {
+    res.status(400);
+    throw new Error('Username and email are required');
+  }
 
   const emailAlreadyExists = await User.findOne({ email });
   if (emailAlreadyExists) {
@@ -18,7 +27,52 @@ const register = asyncHandler(async (req, res) => {
 
   await User.create(req.body);
 
-  res.status(201).json({ message: 'User has been created successfully!' });
+  const otp = generateOTP();
+  await OTP.create({
+    email,
+    otp,
+    expirationTime: addMinutes(new Date(), 10),
+  });
+
+  res.status(201).json({
+    message: 'An OTP is sent to your email.',
+    data: { otp },
+  });
+});
+
+const verifyOTP = asyncHandler(async (req, res) => {
+  const { otp: reqOtp, email } = req.body;
+
+  if (!reqOtp || !email) {
+    res.status(400);
+    throw new Error('OTP and email are required');
+  }
+
+  const emailOTP = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);
+  if (emailOTP.length === 0 || !emailOTP[0].otp) {
+    res.status(400);
+    throw new Error('The OTP is invalid');
+  }
+
+  const hasOTPExpired = isAfter(new Date(), emailOTP[0].expirationTime);
+  if (hasOTPExpired) {
+    res.status(400);
+    throw new Error('The OTP has expired');
+  }
+
+  const matchOTP = await bcrypt.compare(reqOtp, emailOTP[0].otp);
+  if (!matchOTP) {
+    res.status(400);
+    throw new Error('Please provide a valid OTP');
+  }
+
+  const user = await User.findOne({ email });
+  user.isVerified = true;
+  await user.save();
+
+  res
+    .status(200)
+    .json({ message: 'OTP verified successfully', data: { emailOTP } });
 });
 
 const login = asyncHandler(async (req, res) => {
@@ -68,4 +122,4 @@ const logout = asyncHandler(async (req, res) => {
     .json({ message: 'User logged out' });
 });
 
-module.exports = { register, login, logout };
+module.exports = { register, verifyOTP, login, logout };

@@ -12,11 +12,11 @@ const cors = require('cors');
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
-const connectDB = require('./config/db');
+const connectDB = require('./database/connect');
 const { notFound, errorHandler } = require('./middleware/error-handler');
 const swaggerOptions = require('./config/swagger');
 
-// routes
+// routers
 const authRoute = require('./routes/authRoute');
 const gigRoute = require('./routes/gigRoute');
 const reviewRoute = require('./routes/reviewRoute');
@@ -35,9 +35,6 @@ app.use(cookieParser());
 // Implement CORS
 app.use(cors());
 
-// Set security HTTP headers
-app.use(helmet());
-
 // Limit requests from same API
 const limiter = rateLimit({
   max: 100,
@@ -48,6 +45,9 @@ app.use('/api', limiter);
 
 // Body parser, reading data from body into req.body
 app.use(cookieParser());
+
+// Set security HTTP headers
+app.use(helmet());
 
 // Data sanitization against NoSQL query injection
 app.use(mongoSanitize());
