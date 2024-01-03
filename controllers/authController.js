@@ -6,6 +6,8 @@ const { addMinutes, isAfter } = require('date-fns');
 const User = require('../models/User');
 const { generateOTP } = require('../utils/otp');
 const OTP = require('../models/OTP');
+const { sendEmail } = require('../utils/mailer');
+const { verifyOTPTemplate } = require('../templates/verifyOTP');
 
 const register = asyncHandler(async (req, res) => {
   const { username, email } = req.body;
@@ -34,6 +36,9 @@ const register = asyncHandler(async (req, res) => {
     expirationTime: addMinutes(new Date(), 10),
   });
 
+  const template = verifyOTPTemplate(otp);
+  await sendEmail(email, 'Verify your email address', template);
+
   res.status(201).json({
     message: 'An OTP is sent to your email.',
     data: { otp },
@@ -61,6 +66,14 @@ const verifyOTP = asyncHandler(async (req, res) => {
   }
 
   const matchOTP = await bcrypt.compare(reqOtp, emailOTP[0].otp);
+  console.log(
+    '🚀 ~ file: authController.js:69 ~ verifyOTP ~ matchOTP:',
+    matchOTP
+  );
+  console.log(
+    '🚀 ~ file: authController.js:69 ~ verifyOTP ~ emailOTP:',
+    emailOTP
+  );
   if (!matchOTP) {
     res.status(400);
     throw new Error('Please provide a valid OTP');
@@ -85,6 +98,11 @@ const login = asyncHandler(async (req, res) => {
   const user = await User.findOne({ username });
   if (!user) {
     throw new Error('User not found');
+  }
+
+  if (!user.isVerified) {
+    res.status(401);
+    throw new Error('Your email is not verified');
   }
 
   const matchPassword = await bcrypt.compare(password, user.password);
